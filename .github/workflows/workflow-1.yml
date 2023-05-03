@@ -5,8 +5,7 @@ on:
     branches:
       - feature/*
       - develop
-    types: [opened, synchronize]
-
+      
 jobs:
   integration-testing:
     runs-on: ubuntu-latest
@@ -19,9 +18,9 @@ jobs:
           java-version: '17'
       - name: Executing unitary & integration testing
         run: |
-          mvn test -Dtest=OpenLibraryServiceIntegrationTest,ReviewServiceUnitaryTest
+          mvn test -Dtest=OpenLibraryServiceIntegrationTest,ReviewServiceUnitaryTest | tee unit-integ-results.txt
       - name: Generating artifact
         uses: actions/upload-artifact@v3
         with:
           name: Unitary & Integration Results
-          path: ./unit-integ-results
+          path: unit-integ-results.txt

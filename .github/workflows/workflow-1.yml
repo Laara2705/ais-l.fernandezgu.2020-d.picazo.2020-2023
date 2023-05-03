@@ -1,0 +1,26 @@
+name: Unitary & Integration Testing
+
+on:
+  pull_request:
+    branches:
+      - feature/*
+      - develop
+      
+jobs:
+  integration-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Executing unitary & integration testing
+        run: |
+          mvn test -Dtest=OpenLibraryServiceIntegrationTest,ReviewServiceUnitaryTest | tee unit-integ-results.txt
+      - name: Generating artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Unitary & Integration Results
+          path: unit-integ-results.txt

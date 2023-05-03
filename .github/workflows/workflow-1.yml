@@ -1,4 +1,4 @@
-name: Unitary & Integration Testing
+name: Unitary and Integration Testing
 
 on:
   pull_request:

@@ -16,11 +16,19 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Executing unitary & integration testing
+      - name: Executing integration testing
         run: |
-          mvn test -Dtest=OpenLibraryServiceIntegrationTest,ReviewServiceUnitaryTest | tee unit-integ-results.txt
-      - name: Generating artifact
+          mvn test -Dtest=OpenLibraryServiceIntegrationTest | tee integ-results.txt
+      - name: Generating integration artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Unitary and Integration Results
-          path: unit-integ-results.txt
+          name: Integration Testing Results
+          path: integ-results.txt
+      - name: Executing unitary testing
+        run: |
+          mvn test -Dtest=ReviewServiceUnitaryTest | tee unit-results.txt
+      - name: Generating unitary artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Unitary Testing Results
+          path: unit-results.txt

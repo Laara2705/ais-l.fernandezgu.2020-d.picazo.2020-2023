@@ -17,9 +17,9 @@ jobs:
           java-version: '17'
       - name: Executing all tests
         run: |
-          mvn test
+          mvn test | tee commit-test-results.txt
       - name: Generating artifact
         uses: actions/upload-artifact@v3
         with:
           name: Commit Testing Results
-          path: ./_artifacts
+          path: commit-test-results.txt

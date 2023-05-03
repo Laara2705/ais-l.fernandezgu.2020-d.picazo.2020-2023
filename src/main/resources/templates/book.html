@@ -1,0 +1,78 @@
+{{>header}}
+
+<div>
+
+    <!-- INFORMACION DEL LIBRO-->
+    <h1 id="bookTitle" class="ui header"><i class="book icon"></i>{{book.title}}</h1>
+
+    <div class="ui segment piled">
+        {{^book.imageUrl}}<img class="ui small left floated image" src="/images/no_image.png"> {{/book.imageUrl}} {{#book.imageUrl}}
+        <img class="ui small left floated image" src="{{book.imageUrl}}"> {{/book.imageUrl}}
+        <p id="bookDescription">{{book.description}}</p>
+    </div>
+
+    {{#book.subjects}}
+        <div id="{{.}}" class="ui mini label">
+        {{.}}
+        </div>
+    {{/book.subjects}}
+
+    <!-- REVIEWS DEL LIBRO-->
+    <div class="ui comments">
+
+        <!-- LISTA DE REVIEWS-->
+
+        <h3 class="ui dividing header">Reviews</h3>
+        {{#reviews}}
+        <div class="comment">
+            <div class="content">
+                <a class="author">{{nickname}}</a>
+                <div class="metadata">
+                    <span class="date">{{ createdAt }}</span>
+                </div>
+                <div class="text">
+                    {{content}}
+                </div>
+                <div class="actions">
+                    <a class="reply" id="{{nickname}}-delete" onclick="location.href='/book/{{book.id}}/review/{{id}}/delete'">Delete</a>
+                </div>
+            </div>
+        </div>
+        <div class="ui divider"></div>
+        {{/reviews}} 
+        
+        <!-- MENSAJE DE ERROR -->
+        {{#error}}
+        <div class="ui negative message" id="error-message">
+            <div class="header">
+                {{ message }}
+            </div>
+        </div>
+        {{/error}}
+
+        <!-- FORMULARIO DE REVIEW -->
+
+        <div class="ui segment secondary">
+            <h3 class="ui dividing header">Add a Review</h3>
+            <form class="ui reply form" action="/review" method="post">
+                <div class="field">
+                    <label>Nickname</label>
+                    <input type="text" name="nickname" placeholder="nickname">
+                </div>
+                <div class="field">
+                    <label>Review</label>
+                    <textarea name="content"></textarea>
+                </div>
+                <input type="hidden" name="bookId" value="{{book.id}}">
+                <button class="ui blue labeled submit icon button right floated" type="submit" id="add-review">
+                  <i class="icon edit"></i> Add Review
+                </button>
+            </form>
+        </div>
+
+    </div>
+
+
+</div>
+
+{{>footer}}

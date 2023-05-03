@@ -1,0 +1,31 @@
+{{>header}}
+
+
+<!--  BUSCADOR DE LIBROS POR TOPIC -->
+<h1 class="ui header">Books (topic={{ topic }})</h1>
+
+<form class="ui action input" action="/">
+    <input type="text" name="topic" placeholder="Topic ...">
+    <button id="search-button" class="ui button" type="submit">Search</button>
+</form>
+
+<!-- MENSAJE DE ERROR -->
+{{#error}}
+<div class="ui negative message" id="error-message">
+    <div class="header">
+        {{ message }}
+    </div>
+</div>
+{{/error}}
+
+<!--  LISTA DE LIBROS -->
+<div class="ui link list">
+    {{#books}}
+    <a id="{{title}}" class="book item" href="/books/{{id}}"><i class="book icon"></i>
+		<div class="content">
+		{{ title }}
+		</div>
+	</a> {{/books}}
+</div>
+
+{{>footer}}

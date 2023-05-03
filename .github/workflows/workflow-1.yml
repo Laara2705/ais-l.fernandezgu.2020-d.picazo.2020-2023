@@ -22,5 +22,5 @@ jobs:
       - name: Generating artifact
         uses: actions/upload-artifact@v3
         with:
-          name: Unitary & Integration Results
+          name: Unitary and Integration Results
           path: unit-integ-results.txt

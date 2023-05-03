@@ -1,0 +1,25 @@
+name: Commit Testing
+
+on:
+  push:
+    branches:
+      - develop
+      
+jobs:
+  commit-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Executing all tests
+        run: |
+          mvn test
+      - name: Generating artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Commit Testing Results
+          path: ./commit-test-results

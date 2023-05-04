@@ -2,7 +2,7 @@ name: Nightly Testing
 
 on:
   schedule:
-    - cron: '34 23 * * *'
+    - cron: '30 0 * * *'
       
 jobs:
   nightly-testing:

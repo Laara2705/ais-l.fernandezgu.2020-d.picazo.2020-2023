@@ -74,10 +74,23 @@ jobs:
       - name: Closing Docker Hub
         run: |
           docker logout
+      - name: Getting Kubeconfig
+        uses: okteto/actions/namespace@v1
+        id: namespace
+        with:
+          token: ${{ secrets.OKTETO_TOKEN}}
+          namespace: practica3-laara2705
       - name: Deploying to Okteto
-        uses: okteto/okteto-cloud-deploy@v3
+        uses: okteto/actions/deploy@v1
+        env:
+          KUBECONFIG: ${{ steps.namespace.outputs.kubeconfig }}
         with:
           namespace: practica3-laara2705
-          name: books-reviewer
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
-          port: 8080
+          manifest: k8s.yml
+          tag: ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+          waitOn: deployment/books-reviewer
+      - name: Verifying the deployment
+        uses: srt32/uptime@master
+        with:
+          url-to-hit: "https://books-reviewer-practica3-laara2705.cloud.okteto.net"
+          expected-statuses: "200"

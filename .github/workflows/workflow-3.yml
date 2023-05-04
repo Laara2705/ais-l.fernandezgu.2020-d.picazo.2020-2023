@@ -52,7 +52,7 @@ jobs:
           path: rest-results.txt
       - name: Building Docker Image
         run: |
-          docker build -t "${{ secrets.DOCKERHUB_USERNAME }}"/books-reviewer:dev-$(date +%Y%m%d)
+          mvn spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:dev-$(date +%Y%m%d)
       - name: Loging in to Docker Hub
         run: |
           docker login --username="${{ secrets.DOCKERHUB_USERNAME }}" --password="${{ secrets.DOCKERHUB_TOKEN }}"

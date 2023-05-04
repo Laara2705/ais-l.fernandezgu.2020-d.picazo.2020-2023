@@ -62,7 +62,7 @@ jobs:
           docker login --username="${{ secrets.DOCKERHUB_USERNAME }}" --password="${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Pushing Docker Image
         run: |
-          docker push "${{ secrets.DOCKERHUB_USERNAME }}"/books-reviewer:dev-$(date +%Y%m%d)
+          docker push "${{ secrets.DOCKERHUB_USERNAME }}"/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
       - name: Closing Docker Hub
         run: |
           docker logout

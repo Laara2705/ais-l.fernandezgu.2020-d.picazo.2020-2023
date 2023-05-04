@@ -76,7 +76,7 @@ jobs:
           docker logout
       - name: Loging in to Okteto
         run: |
-          okteto context login --token ${{ secrets.OKTETO_TOKEN}}
+          okteto context --token ${{ secrets.OKTETO_TOKEN}}
       - name: Deploying to Okteto
         run: |
           okteto deploy --wait --build --name books-reviewer --image ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout) --port 8080

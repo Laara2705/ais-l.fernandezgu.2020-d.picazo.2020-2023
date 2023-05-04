@@ -2,7 +2,9 @@ name: Nightly Testing
 
 on:
   schedule:
-    - cron: '30 2 * * *'
+    - cron: '30 9 * * *'
+  branches:
+    - develop
 jobs:
   nightly-testing:
     runs-on: ubuntu-latest

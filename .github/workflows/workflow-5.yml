@@ -76,7 +76,8 @@ jobs:
           docker logout
       - name: Login into Okteto
         run: |
-          okteto context use https://cloud.okteto.com --token ${{ secrets.OKTETO_TOKEN }};
+          echo ${{ secrets.OKTETO_TOKEN }} | okteto login --token-stdin
+          okteto namespace laara2705
           kubectl config use-context cloud_okteto_com-context
       - name: Deploy to Okteto
         run: okteto deploy --wait

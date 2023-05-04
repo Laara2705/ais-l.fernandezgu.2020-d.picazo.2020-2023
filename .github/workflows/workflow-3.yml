@@ -51,7 +51,7 @@ jobs:
           docker build -t gu4re/books-reviewer:dev-$(date +%Y%m%d)
       - name: Loging in to Docker Hub
         run: |
-          docker login --username=gu4re --password=797985Dp!
+          docker login --u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Pushing Docker Image
         run: |
           docker push gu4re/books-reviewer:dev-$(date +%Y%m%d)

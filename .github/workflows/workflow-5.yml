@@ -74,9 +74,10 @@ jobs:
       - name: Closing Docker Hub
         run: |
           docker logout
-      - name: Loging in to Okteto
-        run: |
-          okteto context --token ${{ secrets.OKTETO_TOKEN}}
       - name: Deploying to Okteto
-        run: |
-          okteto deploy --wait --build --name books-reviewer --image ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout) --port 8080
+        uses: okteto/okteto-cloud-deploy@v3
+        with:
+          namespace: practica3-laara2705
+          name: books-reviewer
+          image: ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+          port: 8080

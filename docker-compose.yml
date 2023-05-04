@@ -5,3 +5,14 @@ services:
     image: ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
     ports:
       - 8080:8080
+    environment:
+      DOCKERHUB_USERNAME: ${DOCKERHUB_USERNAME}
+      DOCKERHUB_TOKEN: ${DOCKERHUB_TOKEN}
+    secrets:
+      - dockerhub_username
+      - dockerhub_password
+secrets:
+  dockerhub_username:
+    external: true
+  dockerhub_password:
+    external: true

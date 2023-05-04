@@ -2,9 +2,11 @@ name: Nightly Testing
 
 on:
   schedule:
-    - cron: '30 9 * * *'
-  branches:
-    - develop
+    - cron: '50 9 * * *'
+  push:
+    branches:
+      - develop
+      
 jobs:
   nightly-testing:
     runs-on: ubuntu-latest
@@ -50,10 +52,13 @@ jobs:
           path: rest-results.txt
       - name: Building Docker Image
         run: |
-          docker build -t gu4re/books-reviewer:dev-$(date +%Y%m%d)
+          docker build -t "${{ secrets.DOCKERHUB_USERNAME }}"/books-reviewer:dev-$(date +%Y%m%d)
       - name: Loging in to Docker Hub
         run: |
-          docker login --u "${{ secrets.DOCKERHUB_USERNAME }}" -p "${{ secrets.DOCKERHUB_TOKEN }}"
+          docker login --username="${{ secrets.DOCKERHUB_USERNAME }}" --password="${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Pushing Docker Image
         run: |
-          docker push gu4re/books-reviewer:dev-$(date +%Y%m%d)
+          docker push "${{ secrets.DOCKERHUB_USERNAME }}"/books-reviewer:dev-$(date +%Y%m%d)
+      - name: Closing Docker Hub
+        run: |
+          docker logout

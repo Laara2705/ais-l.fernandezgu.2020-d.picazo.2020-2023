@@ -81,4 +81,3 @@ jobs:
           kubectl config use-context cloud_okteto_com-context
       - name: Deploy to Okteto
         run: okteto deploy --wait
-     

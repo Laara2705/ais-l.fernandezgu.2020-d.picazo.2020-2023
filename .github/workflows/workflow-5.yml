@@ -56,7 +56,7 @@ jobs:
           path: rest-results.txt
       - name: Building Docker Image
         run: |
-          mvn spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:${{ exec('mvn', 'org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate', '-Dexpression=project.version', '-q', '-DforceStdout') }}
+          mvn spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
       - name: Loging in to Docker Hub
         run: |
           docker login --username="${{ secrets.DOCKERHUB_USERNAME }}" --password="${{ secrets.DOCKERHUB_TOKEN }}"
@@ -71,8 +71,4 @@ jobs:
           okteto context login --name AppDeployment --token ${{ secrets.OKTETO_TOKEN}}
       - name: Deploying to Okteto
         run: |
-          okteto deploy --wait --build
-        with:
-          name: books-reviewer
-          image: ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:${{ exec('mvn', 'org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate', '-     Dexpression=project.version', '-q', '-DforceStdout') }}
-          port: 8080
+          okteto deploy --wait --build --name books-reviewer --image ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout) --port 8080

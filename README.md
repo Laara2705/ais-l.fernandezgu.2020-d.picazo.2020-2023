@@ -19,6 +19,10 @@ Cabe destacar que se ha añadido a ambos flujos de trabajo así como a flujos fu
 El tercer workflow nos ha costado un poco estructurarlo pero lo hemos logrado. Hemos separado al igual que en el workflow 2 las tareas de forma independiente, categorizadas como se pide como e2e, rest, etc, asi como finalmente hemos creado (cuando todos los tests han sido válidos), una imagen de docker con el comando "mvn spring-boot:build-image -DskipTests -Dspring-boot.build-image.imageName=${{ secrets.DOCKERHUB_USERNAME }}/nombre de la imagen" y hemos iniciado sesión en docker con el comando "docker login" habiendo previamente salvaguardado las credenciales en secrets del repo de github, la hemos subido y hemos cerrado sesion con docker logout como medida de seguridad. Aún estamos a la espera de que funcione la parte del "schedule: crono" ya que hemos probado a cambiarlo por un push para ver si nuestro workflow era erróneo y ha funcionado correctamente, así que hemos programado el workflow para dentro de unas horas para probar y ver qué ocurre. Hemos utilizado la misma estructura que viene dada en las diapositivas.
 [Imagen de docker creada sin crono](https://hub.docker.com/r/gu4re/books-reviewer)
 
+### Workflow - 4
+El cuarto workflow consiste en la ejecución de las pruebas unitarias y de integración en la rama release/**, lo cual ocurre automáticamente cada vez que se detecta un nuevo commit en dicha rama. 
+Una vez más, hemos realizado la ejecución de las tareas de forma independiente, empezando por las pruebas de integración y siguiendo con las unitarias. Para ambas pruebas se guardan los resultados en archivos de texto llamados "integ-results.txt" y "unit-results.txt" respectivamente
+
 ## Desarrollo con (GitFlow/TBD)
 
 Una vez creados los workflows y funcionando estos, pasamos a crear la nueva funcionalidad utilizando (Gitflow o TBD):

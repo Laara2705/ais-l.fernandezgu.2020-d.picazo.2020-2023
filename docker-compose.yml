@@ -1,0 +1,7 @@
+
+services:
+  
+  books-reviewer:
+    image: ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+    ports:
+      - 8080:8080

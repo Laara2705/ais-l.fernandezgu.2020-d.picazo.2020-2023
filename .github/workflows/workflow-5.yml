@@ -77,7 +77,7 @@ jobs:
       - name: Login into Okteto
         run: |
           okteto context use https://cloud.okteto.com --token ${{ secrets.OKTETO_TOKEN }};
-          kubectl config use-context cloud_okteto_com-cluster
+          kubectl config use-context cloud_okteto_com-context
       - name: Deploy to Okteto
         run: okteto deploy --wait
      

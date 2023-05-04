@@ -2,9 +2,9 @@ name: Nightly Testing
 
 on:
   schedule:
-    - cron: '30 23 * * *'
+    - cron: '30 2 * * *'
 jobs:
-  commit-testing:
+  nightly-testing:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3

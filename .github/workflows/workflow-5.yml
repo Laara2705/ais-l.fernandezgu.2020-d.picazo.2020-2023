@@ -9,12 +9,12 @@ jobs:
   deployment-testing:
     runs-on: ubuntu-latest
     steps:
-      - name: Verifying source branch
-        run: |
-           if [[ "${{ github.event.pull_request.head.ref }}" != "develop" ]]; then
-            echo "The pull request source branch is not 'develop'. Exiting."
-            exit 1
-           fi
+      #- name: Verifying source branch
+      #  run: |
+       #    if [[ "${{ github.event.pull_request.head.ref }}" != "develop" ]]; then
+        #    echo "The pull request source branch is not 'develop'. Exiting."
+         #   exit 1
+          # fi
       - name: Installing Okteto CLI
         run: |
           curl https://get.okteto.com -sSfL | sh

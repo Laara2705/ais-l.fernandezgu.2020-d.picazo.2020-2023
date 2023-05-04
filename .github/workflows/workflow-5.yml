@@ -65,13 +65,18 @@ jobs:
           docker login --username="${{ secrets.DOCKERHUB_USERNAME }}" --password="${{ secrets.DOCKERHUB_TOKEN }}"
       - name: Pushing Docker Image
         run: |
-          docker push "${{ secrets.DOCKERHUB_USERNAME }}"/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+          docker push "${{ secrets.DOCKERHUB_USERNAME }}"/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout) | tee docker-push-results.txt
+      - name: Generating DockerPush artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Docker Push Results
+          path: docker-push-results.txt
       - name: Closing Docker Hub
         run: |
           docker logout
       - name: Loging in to Okteto
         run: |
-          okteto context login --name AppDeployment --token ${{ secrets.OKTETO_TOKEN}}
+          okteto context login --token ${{ secrets.OKTETO_TOKEN}}
       - name: Deploying to Okteto
         run: |
           okteto deploy --wait --build --name books-reviewer --image ${{ secrets.DOCKERHUB_USERNAME }}/books-reviewer:$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout) --port 8080

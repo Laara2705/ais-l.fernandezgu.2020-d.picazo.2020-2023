@@ -43,12 +43,11 @@ jobs:
       - name: Executing Selenium testing
         run: |
           mvn test -Dtest=SeleniumTest | tee selenium-results.txt
-# Commented now due to github's free plan space limitation          
-#      - name: Generating selenium artifact 
-#        uses: actions/upload-artifact@v3
-#        with:
-#          name: Selenium Testing Results
-#          path: selenium-results.txt
+      - name: Generating selenium artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Selenium Testing Results
+          path: selenium-results.txt
       - name: Executing REST testing
         run: |
           mvn test -Dtest=RestTest | tee rest-results.txt

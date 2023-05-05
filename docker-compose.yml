@@ -2,6 +2,6 @@ version: '3'
 
 services:
   books-reviewer:
-    image: gu4re/books-reviewer:0.2.0-SNAPSHOT # Write it literally due to env problems
+    image: gu4re/books-reviewer:0.2.0 # Write it literally due to env problems
     ports:
       - 8080:8080

@@ -1,0 +1,49 @@
+name: Commit Testing
+
+on:
+  push:
+    branches:
+      - develop
+      
+jobs:
+  commit-testing:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Executing integration testing
+        run: |
+          mvn test -Dtest=OpenLibraryServiceIntegrationTest | tee integ-results.txt
+      - name: Generating integration artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Integration Testing Results
+          path: integ-results.txt
+      - name: Executing unitary testing
+        run: |
+          mvn test -Dtest=ReviewServiceUnitaryTest | tee unit-results.txt
+      - name: Generating unitary artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Unitary Testing Results
+          path: unit-results.txt
+      - name: Executing Selenium testing
+        run: |
+          mvn test -Dtest=SeleniumTest | tee selenium-results.txt
+      - name: Generating selenium artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: Selenium Testing Results
+          path: selenium-results.txt
+      - name: Executing REST testing
+        run: |
+          mvn test -Dtest=RestTest | tee rest-results.txt
+      - name: Generating REST artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: REST Testing Results
+          path: rest-results.txt

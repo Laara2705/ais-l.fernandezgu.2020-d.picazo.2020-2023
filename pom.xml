@@ -4,8 +4,8 @@
 	<modelVersion>4.0.0</modelVersion>
 
 	<groupId>es.codeurjc.ais</groupId>
-	<artifactId>practica_3_testing</artifactId>
-	<version>0.2.0-SNAPSHOT</version>
+	<artifactId>lara.fernandez.diego.picazo</artifactId>
+	<version>0.2.0</version>
 
 	<parent>
 		<groupId>org.springframework.boot</groupId>

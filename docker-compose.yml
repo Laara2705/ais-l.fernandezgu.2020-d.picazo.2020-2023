@@ -2,18 +2,6 @@ version: '3'
 
 services:
   books-reviewer:
-    environment:
-      DOCKERHUB_USERNAME: ${DOCKERHUB_USERNAME}
-      DOCKERHUB_TOKEN: ${DOCKERHUB_TOKEN}
     image: gu4re/books-reviewer:0.2.0-SNAPSHOT # Write it literally due to env problems
     ports:
       - 8080:8080
-    secrets:
-      - dockerhub_username
-      - dockerhub_password
-
-secrets:
-  dockerhub_username:
-    external: true
-  dockerhub_password:
-    external: true

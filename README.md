@@ -37,6 +37,9 @@ environment:
 pero no fuimos capaces de conseguir que funcionara, por lo que tuvimos que escribir directamente la imagen (image: gu4re/books-reviewer:0.2.0-SNAPSHOT # Write it literally due to env problems)
 
 ### Workflow - 3
+Tras muchos intentos, finalmente consultando la documentación de GitHub así como "StackOverflow", vimos que para el correcto funcionamiento del schedule, el workflow necesita estar en la rama default (master), por lo tanto hemos copiado el workflow que habíamos desarrollado en la rama develop a la rama master, consiguiendo así una correcta ejecución del test a la hora indicada (0:30 UTC, 2:30 en España)
+[Imagen de docker](https://hub.docker.com/layers/gu4re/books-reviewer/dev-20230505/images/sha256-e1d2ceee77247a815a6e21a55b1ab6850d3e43e30bc83bf1dd609957a7242c36?context=repo)
+[Última ejecución](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4889085337)
 
 ## Desarrollo con (GitFlow/TBD)
 

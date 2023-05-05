@@ -8,6 +8,8 @@ import es.codeurjc.ais.review.Review;
 public class BookDetail extends Book{
 
     private String description;
+    
+    private static final int MAX_DESCRIPTION_LENGTH = 950;
 
     private String imageUrl;
 
@@ -20,7 +22,11 @@ public class BookDetail extends Book{
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        if (description.length() > MAX_DESCRIPTION_LENGTH)
+            this.description = description.substring(0, MAX_DESCRIPTION_LENGTH - 3)
+                    .concat("...");
+        else
+            this.description = description;
     }
 
     public String getImageUrl() {

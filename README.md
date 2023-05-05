@@ -21,7 +21,22 @@ El tercer workflow nos ha costado un poco estructurarlo pero lo hemos logrado. H
 
 ### Workflow - 4
 El cuarto workflow consiste en la ejecución de las pruebas unitarias y de integración en la rama release/**, lo cual ocurre automáticamente cada vez que se detecta un nuevo commit en dicha rama. 
-Una vez más, hemos realizado la ejecución de las tareas de forma independiente, empezando por las pruebas de integración y siguiendo con las unitarias. Para ambas pruebas se guardan los resultados en archivos de texto llamados "integ-results.txt" y "unit-results.txt" respectivamente
+Una vez más, hemos realizado la ejecución de las tareas de forma independiente, empezando por las pruebas de integración y siguiendo con las unitarias. Para ambas pruebas se guardan los resultados en artifacts llamados "integ-results.txt" y "unit-results.txt" respectivamente
+
+### [Mayo 5, 2023]
+### Workflow - 5
+El quinto workflow consiste en el flujo de trabajo final compuesto por la fusión de una versión estable o release, que se encuentra en la rama develop, a la rama de producción (master). Hemos necesitado acotar el origen a develop tal cual se pedía en el enunciado con un breve script de bash, así como la necesidad de instalar la CLI de Okteto con el siguiente comando: "curl https://get.okteto.com -sSfL | sh". 
+Posteriormente ejecutamos todas las pruebas, construimos la imagen de Docker y la subimos a DocherHub, de la misma forma que hacíamos en el workflow - 3, con la diferencia de que ahora utilizando los comandos "okteto context use https://cloud.okteto.com --token ${{ secrets.OKTETO_TOKEN }}" y "okteto deploy --wait --build", somos capaces de desplegar la imagen de Docker en un contenedor de Okteto, dándole portabilidad a través de un URL. Además, para el correcto funcionamiento de la subida en Okteto, hemos tenido que configurar el archivo "docker-compose.yml", el cual especifica el servicio de books-reviewer con la imagen de Docker a subir a Okteto. 
+Hemos encontrado diversos problemas a la hora de ejecutar el workflow, en especial sobre Okteto, y es que nos hubiera gustado automatizar la imagen que especificamos en el archivo "docker-compose", ya que por mucho que especificabamos en el atributo image el nombre de usuaro de Docker como un secrets de GitHub, así como la versión a través de la ejecución por terminal con el comando "$(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)", no es posible ya que hemos visto que no lo soporta. Además, vimos la documentación de GitHub e intentamos automatizar el proceso usando:
+      
+```yml      
+environment:
+  VERSION: $(mvn org.apache.maven.plugins:maven-help-plugin:3.2.0:evaluate -Dexpression=project.version -q -DforceStdout)
+  DOCKERUSERNAME: ${{ secrets.DOCKERHUB_USERNAME }}"
+```
+pero no fuimos capaces de conseguir que funcionara, por lo que tuvimos que escribir directamente la imagen (image: gu4re/books-reviewer:0.2.0-SNAPSHOT # Write it literally due to env problems)
+
+### Workflow - 3
 
 ## Desarrollo con (GitFlow/TBD)
 

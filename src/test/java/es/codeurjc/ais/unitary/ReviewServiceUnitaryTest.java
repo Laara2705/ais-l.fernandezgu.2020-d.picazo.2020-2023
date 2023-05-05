@@ -80,7 +80,7 @@ public class ReviewServiceUnitaryTest {
 		when(openLibraryService.getBook("OL259010W"))
 				.thenReturn(
 						new OpenLibraryService.BookData(null, "/work/01",
-								null, new Integer[1], new String[]{"HELLO WORLD"}));
+								"hello-world", new Integer[1], new String[]{"HELLO WORLD"}));
 		bookDetailGood = bookService.findById("OL259010W");
 		Assertions.assertNotSame(Optional.empty(), bookDetailGood,
 				"bookDetail should not be empty");

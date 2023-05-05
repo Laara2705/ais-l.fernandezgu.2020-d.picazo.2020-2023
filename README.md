@@ -72,3 +72,26 @@ $ git push -u origin feature/short-description
 ```
 
 Posteriormente, hemos generado una [pull request](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/pull/5) para fusionar la rama que contiene la nueva funcionalidad (feature/short-description) a la rama de desarrollo (develop). La acción ha desencadenado un [workflow](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4892340725) el cuál ha validado la acción de forma satisfactoria. Hemos fusionado las ramas y hemos integrado los cambios dentro de la rama de desarrollo (develop). Sin embargo, cuando hemos fusionado las ramas, se ha desencadenado otro [workflow de commit](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4892349790) en la rama de desarrollo (develop) y al observarlo detenidamente, hemos visto que a pesar de que el workflow ha pasado satisfactoriamente, en los artifact resultantes, concretamente en el [Unitary Test Results](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/suites/12697183866/artifacts/681372753), hemos visto que se ha producido un error menor en uno de los tests, concretamente en el testEXTRA, que es uno de los que programamos en su momento para la práctica 1. Aun así el workflow ha pasado satisfactoriamente, ya que no se ha considerado un error crítico y no ha afectado por ende al comportamiento habitual de la aplicación. De todas formas, siguiendo el modelo de GitFlow, vamos a crear una rama llamada "hotfix/short-description", y hacer un hotfix o arreglo del error menor, para solucionar este problema antes de sacar una release, para aportar mayor estabilidad a la versión de producción que queremos sacar.
+
+[17:35]
+Finalmente hemos aplicado un pequeño hotfix a nuestro testEXTRA que era un test unitario y hemos conseguido solucionar el problema, tan solo debíamos evitar el NullPointerException que se generaba de no haber indicado una descripcion de prueba a la hora de generar un Book dentro del test, solventándolo de esta manera:
+
+```java
+@Test
+@DisplayName("EXTRA: Checking good ID-book passed")
+// EXTRA test checking what happens if a good ID is passed
+public void testUNIT_EXTRA(){
+      /* Given */
+      Optional<BookDetail> bookDetailGood;
+      // random valid id of an existing book
+      when(openLibraryService.getBook("OL259010W"))
+                  .thenReturn(
+                              new OpenLibraryService.BookData(null, "/work/01",
+                                          "hello-world", new Integer[1], new String[]{"HELLO WORLD"}));
+      bookDetailGood = bookService.findById("OL259010W");
+      Assertions.assertNotSame(Optional.empty(), bookDetailGood,
+                  "bookDetail should not be empty");
+}
+```
+
+Al haber fusionado la rama del hotfix a la rama de develop, como nos pasó anteriormente con la feature, nos ha generado dos flujos de trabajo, los cuales esta vez han pasado todos de forma satisfactoria, [un workflow ha sido generado por la pull request](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4895046354) y merge a la rama de desarrollo y el [otro al haber pusheado y commiteado en dicha rama](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4895058446), ambos con el hotfix incorporado. Para prácticamente terminar con el GitFlow, vamos a realizar unas cuantas correciones en el POM (indicar nuestros nombres en el artifactID) así como depurar un poco el docker-compose para después desplegar un release estable de nuestra aplicación a partir de develop con el nombre "release/0.2.0"

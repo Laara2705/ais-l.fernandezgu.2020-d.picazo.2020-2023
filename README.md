@@ -5,6 +5,7 @@
 
 [Aplicación Okteto (CAMBIAR ENLACE)](https://books-maes95.cloud.okteto.net/)
 
+## FASE 1
 ### [Mayo 3, 2023]
 ### Workflow - 1 
 Hemos creado el primer workflow en la carpeta .github/workflows, el cual recoge la funcionalidad de ejecutar los test unitarios y de integración cuando cogemos una rama con el patrón feature y la fusionamos con la rama develop. Para ello, hemos creado dichas ramas utilizando tanto la web de github, como el comando git branch, el cual nos permite crear nuevas ramas en local para poder desplegarlas. De forma secundaria hemos utilizado los comandos básicos para poder subir archivos (git add, git commit, git push). A su vez hemos desplegado los resultados del workflow en un artifact llamado Unitary & Integration Results en la ruta ./unit-integ-results
@@ -41,12 +42,33 @@ Tras muchos intentos, finalmente consultando la documentación de GitHub así co
 [Imagen de docker](https://hub.docker.com/layers/gu4re/books-reviewer/dev-20230505/images/sha256-e1d2ceee77247a815a6e21a55b1ab6850d3e43e30bc83bf1dd609957a7242c36?context=repo)
 [Última ejecución](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4889085337)
 
-## Desarrollo con (GitFlow/TBD)
+## FASE 2 - Desarrollo con (GitFlow/TBD)
 
 Una vez creados los workflows y funcionando estos, pasamos a crear la nueva funcionalidad utilizando (Gitflow o TBD):
 
 ```
-$ git clone ...
+$ git clone https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023.git Practica3-AIS
 ```
 
-....
+Una vez clonado el repositorio, procedemos a abrirlo con nuestro IDE de preferencia, en nuestro caso IntelliJ. Hemos determinado que lo mejor, sería incluir esta nueva funcionalidad dentro de la clase BookDetail, concretamente dentro del método setDescription(String description), la cual define la descripción de un libro. Lo hemos establecido tal que así:
+
+```java
+// De esta forma añadimos 3 puntos al final cuando excede del maximo de longitud
+public void setDescription(String description) {
+        if (description.length() > MAX_DESCRIPTION_LENGTH)
+            this.description = description.substring(0, MAX_DESCRIPTION_LENGTH - 3)
+                    .concat("...");
+        else
+            this.description = description;
+    }
+```
+
+Luego hemos añadido los cambios al repositorio remoto de esta forma:
+
+```
+$ git add .
+$ git commit -m "añadida funcionalidad nueva de la descripcion"
+$ git push -u origin feature/short-description
+```
+
+Posteriormente, hemos generado una [pull request](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/pull/5) para fusionar la rama que contiene la nueva funcionalidad (feature/short-description) a la rama de desarrollo (develop). La acción ha desencadenado un [workflow](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4892340725) el cuál ha validado la acción de forma satisfactoria. Hemos fusionado las ramas y hemos integrado los cambios dentro de la rama de desarrollo (develop). Sin embargo, cuando hemos fusionado las ramas, se ha desencadenado otro [workflow de commit](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/actions/runs/4892349790) en la rama de desarrollo (develop) y al observarlo detenidamente, hemos visto que a pesar de que el workflow ha pasado satisfactoriamente, en los artifact resultantes, concretamente en el [Unitary Test Results](https://github.com/Laara2705/ais-l.fernandezgu.2020-d.picazo.2020-2023/suites/12697183866/artifacts/681372753), hemos visto que se ha producido un error menor en uno de los tests, concretamente en el testEXTRA, que es uno de los que programamos en su momento para la práctica 1. Aun así el workflow ha pasado satisfactoriamente, ya que no se ha considerado un error crítico y no ha afectado por ende al comportamiento habitual de la aplicación. De todas formas, siguiendo el modelo de GitFlow, vamos a crear una rama llamada "hotfix/short-description", y hacer un hotfix o arreglo del error menor, para solucionar este problema antes de sacar una release, para aportar mayor estabilidad a la versión de producción que queremos sacar.
